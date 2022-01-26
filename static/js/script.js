@@ -30,14 +30,19 @@ rpsGame = (yourChoice) => {
   console.log(yourChoice)
   let humanChoice, botChoice;
   humanChoice = yourChoice.id
+
   botChoice = numberToChoice(randToRpsInt()); // botChoice. random interger passed into numnberToChoice
+
   results = decideWinner(humanChoice, botChoice); // returns the winner of the game. [0, 1] human lost | bot won message
   console.log(results)
 
   botChoice = numberToChoice(randToRpsInt());
   console.log('Computer Choice:',botChoice);
-  // message = finalMessage(results) // returnes {'message': "you won!", color: 'green'}  
-  // rpsFrontEnd(yourChoice.id, botChoice, message);
+
+  message = finalMessage(results) // returnes {'message': "you won!", color: 'green'}  
+  console.log(message);
+
+  rpsFrontEnd(yourChoice.id, botChoice, message);
 
 }
 
@@ -80,4 +85,44 @@ decideWinner = (yourChoice, computerChoice) => {
 
    return [yourScore, computerScore];
 }  
-//(STOPPED HERE) Challenge 3: Rock, Paper, Scissors part 2 : TIME STAMP 30:59
+
+// 1,0 "you won!", 0.5, 0.5 ("It's a tie"), 0.5 , 1 ("You lost!")
+finalMessage = ([yourScore, computerScore]) => {
+  if(yourScore === 0) {
+    return {message: 'You lost!', 'color': 'red'};
+  } else if (yourScore === 0.5){
+    return {message: 'You tied', 'color': 'yellow'};  
+  } else {
+    return {message: 'You won!', 'color': 'green'};
+  }
+}
+
+rpsFrontEnd = (humanImageChoice, botImageChoice, finalMessage) => {
+  let imagesDatabase =  {
+    "rock": document.getElementById('rock').src,
+    "paper": document.getElementById('paper').src,
+    "scissors": document.getElementById('scissors').src
+  }
+
+// remove all the images 
+document.getElementById('rock').remove();
+document.getElementById('paper').remove();
+document.getElementById('scissors').remove();
+
+// Only showing images selected by user and bot
+
+let humanDiv = document.createElement('div');
+let botDiv =  document.createElement('div');
+let messageDiv = document.createElement('div');
+
+humanDiv.innerHTML = "<img src='" + imagesDatabase[humanImageChoice] + "'height= 150 width=150 style='box-shadow: 0px 10px 50px rgba(37, 50, 233, 1);'>";
+botDiv.innerHTML = "<img src='" + imagesDatabase[botImageChoice] + "'height= 150 width=150 style='box-shadow: 0px 10px 50px rgba(243, 38, 24, 1);'>";
+messageDiv.innerHTML = "<h1 style='color: " + finalMessage['color'] + "; font-size: 60px; padding; 30px '>" + finalMessage['message'] + "</h1>"
+
+document.getElementById('flex-box-rps-div').append(humanDiv);
+document.getElementById('flex-box-rps-div').append(botDiv);
+document.getElementById('flex-box-rps-div').append(messageDiv);
+
+}
+
+//(STOPPED HERE) Challenge 3: Rock, Paper, Scissors part 2 : TIME STAMP 55:10
